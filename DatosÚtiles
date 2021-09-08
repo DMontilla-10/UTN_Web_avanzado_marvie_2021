@@ -1,0 +1,17 @@
+Comentar varias lines a la vez
+ctrl + /
+ctrl + k + c
+
+Descomentar varias lineas a la vez
+ctrl + /
+ctrl * k + u
+
+Ajustar lineas
+ctrl + z
+
+Mover lineas arriba o abajo
+alt + flecha arriba
+alt + flecha abajo
+
+Duplicar linea de código
+alt+ shift + flecha
