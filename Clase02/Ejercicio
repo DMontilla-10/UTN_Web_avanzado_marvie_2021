@@ -1,0 +1,2 @@
+1) Hacer una petición de tipo get que pase por parámetros el sexo 'F' ó 'M'
+y devuelva como respuesta todos los usuarios que cumplen con esa condición
