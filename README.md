@@ -2,7 +2,7 @@
 Curso de desarrollo web avanzado - UTN Facultad Regional de Bs As
 
 # Clase01: 
-Repaso de los fundamentos de JavaScript
+- Repaso de los fundamentos de JavaScript
 
 # Clase02: 
 - Inicializar un proyecto de NodeJS:
