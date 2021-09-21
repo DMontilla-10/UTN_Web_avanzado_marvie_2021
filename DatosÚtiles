@@ -15,3 +15,11 @@ alt + flecha abajo
 
 Duplicar linea de código
 alt+ shift + flecha
+
+Actualizar .gitignore
+1°) git add .
+2°) git commit -m 'Descripción del commit'
+3°) git rm -r --cached .
+4°) git add .
+5°) git commit -m 'Descripción del commit'
+6°) git push 
