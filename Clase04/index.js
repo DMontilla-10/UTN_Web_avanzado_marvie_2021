@@ -1,19 +1,15 @@
 const express = require("express");
-require("dotenv").config();
 const userRoutes = require("./routes/users");
-const mongoose = require("mongoose");
+require('./config/database')
 
-mongoose.connect(
-  process.env.MONGO_URI,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
-
-mongoose.connection.on("connected", () => {
-  console.log("Mongo está conectado exitosamente !!!");
-});
+//app.get('/api', (req, res)=>{
+//  User.find().then((data)=>{
+//    console.log('Data: ', data)
+//    res.json(data)
+//  }).catch(error => {
+//    console.log(error)
+//  })
+//})
 
 const app = express();
 const port = process.env.PORT;

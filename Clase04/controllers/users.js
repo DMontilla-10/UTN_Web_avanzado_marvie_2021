@@ -1,11 +1,18 @@
+const { User } = require('../Model/user');
+
 const users = [
   { id: 1, nombre: "Daniel", status: "ACTIVE" },
   { id: 2, nombre: "Sol", status: "ACTIVE" },
   { id: 3, nombre: "Antonela", status: "ACTIVE" },
 ];
 
-const getAllUsers = (req, res) => {
-  res.send(users);
+const getAllUsers = (req, res) => {  
+  User.find().then((data)=>{
+    console.log('Data: ', data)
+    res.json(data)
+  }).catch(error => {
+    console.log(error)
+  })
 };
 
 const getUserById = (req, res) => {
@@ -13,6 +20,24 @@ const getUserById = (req, res) => {
   if (!userFound) res.status(404).send("Usuario no encontrado");
   res.send(userFound);
 };
+
+const createNewUser = () => {
+  const data = {
+    firstName: 'Selene',
+    lastName: 'Luna'
+}
+
+  const newUser = new User(data)
+
+  newUser.save(error =>{
+    if(error){
+      console.log('Oops, ocurrio un error')
+    } else {
+      console.log('Nuevo usuario guardado exitosamente !!!')
+    }
+})
+
+}
 
 // Funciones de validación
 const findUser = (id) => {
