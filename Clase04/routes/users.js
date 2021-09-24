@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllUsers, getUserById } = require('../controllers/users')
+const { getAllUsers, getUserById, createNewUser } = require('../controllers/users')
 
 const userRoutes = express.Router();
 
@@ -8,20 +8,7 @@ userRoutes.get("/", getAllUsers);
 //Capturar un parámetro
 userRoutes.get("/:id", getUserById);
 
-userRoutes.post("/", (req, res) => {
-  const { error } = validateUser(req.body.nombre);
-
-  if (!error) {
-    const user = {
-      id: users.length + 1,
-      nombre: req.body.nombre,
-    };
-    users.push(user);
-    res.send(user);
-  } else {
-    res.status(400).send(error.details[0].message);
-  }
-});
+userRoutes.post("/", createNewUser);
 
 userRoutes.put("/:id", (req, res) => {
   // Encontrar si existe el objeto usuario que queremos modificar
