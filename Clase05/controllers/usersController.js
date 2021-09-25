@@ -1,10 +1,5 @@
 const { User } = require("../Model/userModel");
-
-const users = [
-  { id: 1, nombre: "Daniel", status: "ACTIVE" },
-  { id: 2, nombre: "Sol", status: "ACTIVE" },
-  { id: 3, nombre: "Antonela", status: "ACTIVE" },
-];
+const bcryptjs = require('bcryptjs')
 
 const getAllUsers = (req, res) => {
   User.find()
@@ -36,12 +31,15 @@ const getUserById = async (req, res) => {
 //     });
 // };
 
-const createNewUser = (req, res) => {
+const createNewUser = async (req, res) => {
+  // Antes de guardar el password lo encriptamos
+  const password = await bcryptjs.hash(req.body.password, 10) 
+
   // Guardar nueva data en Mongo
   const data = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    password: req.body.password,
+    password: password,
     email: req.body.email,
   };
 
@@ -50,8 +48,10 @@ const createNewUser = (req, res) => {
   newUser.save((error) => {
     if (error) {
       console.log("Oooops, ocurrió un error");
+      res.send(error)
     } else {
       console.log("Nuevo usuario guardado exitosamente !!!");
+      res.send(newUser)
     }
   });
 };
@@ -86,6 +86,17 @@ const deleteUser = async (req, res) => {
   }
 }
 
+const loginUser = async (req, res) => {
+  const password = req.body.password
+  const compare = await bcryptjs.compare(password, "$2a$10$iiVPkL/rA1EyWNUdc0qS6.ZibChkql0QP3eTdTUThVRiAjySbwQAa")
+
+  if(compare) {
+    res.json({status: 'OK'})
+  } else {
+    res.json({ status: 'El email o contraseña con incorrectos'})
+  }
+}
+
 // Funciones de validación
 const findUser = (id) => {
   return users.find((user) => user.id === parseInt(id));
@@ -105,5 +116,6 @@ module.exports = {
   getUserById,
   createNewUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  loginUser
 };

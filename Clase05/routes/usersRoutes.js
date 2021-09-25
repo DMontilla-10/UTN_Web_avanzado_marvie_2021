@@ -5,6 +5,7 @@ const {
   createNewUser,
   updateUser,
   deleteUser,
+  loginUser
 } = require("../controllers/usersController");
 
 const userRoutes = express.Router();
@@ -17,6 +18,8 @@ userRoutes.get("/:id", getUserById);
 userRoutes.post("/", createNewUser);
 
 userRoutes.put("/:id", updateUser);
+
+userRoutes.post('/loggin', loginUser);
 
 // Manejo de peticiones DELETE
 // Eliminación física: se borra el registro
