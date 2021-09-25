@@ -87,13 +87,16 @@ const deleteUser = async (req, res) => {
 }
 
 const loginUser = async (req, res) => {
+  const user = await User.find().where({email: req.body.email})
+  const hashPassword = user[0].password;
+
   const password = req.body.password
-  const compare = await bcryptjs.compare(password, "$2a$10$iiVPkL/rA1EyWNUdc0qS6.ZibChkql0QP3eTdTUThVRiAjySbwQAa")
+  const compare = await bcryptjs.compare(password, hashPassword)
 
   if(compare) {
     res.json({status: 'OK'})
   } else {
-    res.json({ status: 'El email o contraseña con incorrectos'})
+    res.json({ status: 'El email o contraseña son incorrectos'})
   }
 }
 
