@@ -1,0 +1,159 @@
+*** SQL [Structure Query Lenguaje] ***
+Es un lenguaje estandar de comunicacion con bases de datos 
+Nos permite la comunicacion entre:
+    Lenguaje de Banckend <-> Motor de Base de Datos
+
+1) TIPOS DE CAMPOS 
+    Alfanumericos -> Numeros y letras. Hasta 255 caracteres
+    Numericos -> Numeros. Hay varios. Los principales son ENTEROS (sin coma) y REALES (con coma)
+    Booleanos -> FALSO o VERDADERO
+    Fechas -> Posibilita order registros y hacer calculos entre 
+    Autoincrementales -> Enteros que incrementan en una unidad su valor para cada registro incorporado
+
+2) TIPOS DE SENTENCIAS
+    * MANIPULACION DE DATOs:
+        SELECT -> Recuperar o seleccionar datos de la BD
+        INSERT -> Añadir nuevas filas de datos
+        DELETE
+        UPDATE
+
+    * DEFICION DE DATOS
+        CREATE TABLE -> Añade una nueva tabla
+        DROP TABLE -> Suprime una tabla existente
+        ALTER TABLE -> Modifica la estructura de una tabla
+
+3) COMPONENTES SINTACTICOS
+
+ Las sentencias SQL tienen una misma estructura
+    1- Empiezan con un verbo
+    2- Continuan con una o mas cláusulas que nos indican los datos con los que vamos a operar
+
+ Por ejemplo:
+ SELECT curso, nombre, nota FROM alumnos WHERE asignatura = 'LENGUA'
+
+ SELECT -> verbo
+ curso, nombre y nota -> nombres de las columnas
+ FROM -> cláusula
+ alumnos -> Nombre de la tabla
+ WHERE -> palabra reserva
+ asignatura = 'LENGUA' -> Expresion
+ 'LENGUA' -> Constante
+
+4) CREACION DE TABLAS
+
+Para crear una tabla debemos especificar algunos datos:
+1- El nombre de la tabla
+2- Los nombres de los campos y sus caracteristicas
+
+SINTAXIS:
+CREATE TABLE nombre_tabla (
+    nombre_campo1 tipo1 
+    nombre_campo2 tipo2
+    nombre_campoN tipoN
+)
+
+Ejemplo: 
+CREATE TABLE animal (
+    id PRIMARY KEY INT(5) NOT NULL AUTO_INCREMENTAL,
+    nombre VARCHAR(50) NOT NULL,  
+    sexo VARCHAR(1) NOT NULL,
+    edad INT(3),
+    fecha_ingreso DATE NOT NULL
+)
+
+TIPOS DE CAMPOS:
+    INT -> Numeros enteros
+    DOUBLE o FLOAT -> Numeros reales (con coma)
+    CHAR -> Alfanumerico de logitud fija predeterminada
+    VARCHAR -> Alfanumerico de longitud variable
+    DATE -> Fecha
+    BOOLEAN -> Verdadero o Falso
+
+5) MODIFICAR UNA TABLA
+
+Modifica el diseño de una tabla existente.
+Se pueden modificar los campos o los indices existentes
+
+SINTAXIS:
+ALTER TABLE tabla ADD COLUMN campo tipo_de_campo(tamaño)
+ALTER TABLE tabla DROP COLUMN campo
+
+tabla: Nombre de la tabla a modificar,
+campo: Nombre del campo que se va añadir o eliminar
+tipo_de_campo: Tipo de campo que se va a crear
+tamaño: Tamaño del campo que se va a añadir (solo para tipo texto)
+
+ADD COLUMN: Se utiliza para agregar un nuevo campo
+DROP COLUMN: Se utiliza para elimnar una columna 
+
+Ejemplos: 
+ALTER TABLE empleados ADD COLUMN sueldo FLOAT
+-- Agrega un campo sueldo de tipo FLOAT en la tabla empleados
+
+ALTER TABLES empleados DROP COLUMN puesto
+-- Elimina el campo puesto de la tabla empleados
+
+*** EJERCICIO 1 ***
+1 - Agregar un campo de nombre direccion a la tabla usuarios que sea de tipo alfanumerico, que permita una extension de 150 carateres y que pueda ser nulo. 
+Agregar otro campo de nombre edad a la tabla usuarios y que sea de tipo entero y que no pueda venir vacío.
+
+2 - Eliminar el campo direccion de la tabla usuarios.
+
+6) INTRODUCIR REGISTROS
+
+SINTAXIS:
+INSERT INTO nombre_tabla (nombre_campo1, nombre_campo2, nombre_campoN, ...) VALUES (valor_campo1, valor_campo2, valor_campoN)
+
+Ejemplo:
+create table usuarios (
+	id int primary key not null auto_increment,
+	firstName varchar(50) not null,
+    lastName varchar(50) not null,
+    email varchar(100) not null,
+    password varchar(100) not null,
+    age int not null
+)
+
+INSERT INTO usuarios (firstName, lastName, email, pasword, age) VALUES ('Daniel', 'Montilla', 'daniel@gmail.com', '123456', 28)
+
+7) ELIMINAR REGISTROS
+
+SINTAXIS:
+DELETE FROM nombre_tabla WHERE condicion_de_seleccion
+
+Ejemplos: 
+DELETE FROM usuarios WHERE firstName = 'Ricardo'
+
+*** HAY QUE TENER CUIDADO SI NO SE ESPECIFICA LA CLAUSULA ***
+
+DELETE FROM proveedores !!!NOOOOOO OLVIDAR EL WHERE!!!
+
+8) ACTUALIZAR UN REGISTROS
+
+SINTAXIS:
+UPDATE nombre_tabla SET nombre_campo1 = valor_campo1, nombre_campo2 = valor_campo2, nombre_campoN = valor_campoN
+
+Ejemplo:
+UPDATE usuarios SET estado = false where id = 3
+update cliente set razon_social = 'Wallmart' where razon_social = 'Dia'
+
+NO OLVIDAR EL WHERE!!!!!!!!!!!!!!!!!!!!
+
+9) PRACTICA
+CREATE SCHEMA curso DEFAULT CHARACTER SET latin1;
+USE curso;
+
+Crear tablas, insertar registros, seleccionar registros y actualizarlos
+
+10) EJERCITACION
+    1- Buscar en la tabla productos el nombre de todos los productos 
+    cuyo precio sea mayor a $2000 y tenga entre 5 y 30 unidades en stock
+
+    2- En la tabla cliente realizar las siguientes modificaciones:
+    
+    a) Actualizar todos los registros del campo nombre y del campo 
+    apellido y pasarlos a mayuscula - PISTA: funcion upper()
+    
+    b) Agregar en la columna comentario la leyenda 'cuit vencido' para
+    todos los clientes cuyo cuit tenga menos de 8 caracteres
+    PISTA: funcion length()
