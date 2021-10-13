@@ -2,7 +2,7 @@ const express = require("express");
 const {
   getMysqlUsers,
   createNewUser,
-} = require("../controllers/usersController");
+} = require("../controllers/mysqlUsersControllers");
 
 const mysqlRoutes = express.Router();
 
