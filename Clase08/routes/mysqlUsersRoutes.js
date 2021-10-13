@@ -1,16 +1,13 @@
 const express = require("express");
-const mysqlConnection = require("../config/mysql");
+const {
+  getMysqlUsers,
+  createNewUser,
+} = require("../controllers/usersController");
 
 const mysqlRoutes = express.Router();
 
-mysqlRoutes.get('/allUsers', (req, res)=>{
-    mysqlConnection.query("select * from usuarios", (error, data)=>{
-        if(error) {
-            console.log(error)
-        } else {
-            res.status(200).send({ data: data})
-        }
-    })
-})
+mysqlRoutes.get("/allUsers", getMysqlUsers);
 
-module.exports = mysqlRoutes
+mysqlRoutes.post("/createUser", createNewUser);
+
+module.exports = mysqlRoutes;

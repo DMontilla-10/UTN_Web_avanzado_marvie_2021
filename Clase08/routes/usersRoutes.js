@@ -16,7 +16,7 @@ userRoutes.get("/allUser", verifyToken, getAllUsers);
 //Capturar un parámetro
 userRoutes.get("/:id", getUserById);
 
-userRoutes.post("/", createNewUser);
+userRoutes.post("/newUser", createNewUser);
 
 userRoutes.put("/:id", updateUser);
 
