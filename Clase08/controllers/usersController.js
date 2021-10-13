@@ -132,7 +132,6 @@ const verifyToken = (req, res, next) => {
   }
 }
 
-
 // Funciones de validación
 const findUser = (id) => {
   return users.find((user) => user.id === parseInt(id));

@@ -149,6 +149,9 @@ Crear tablas, insertar registros, seleccionar registros y actualizarlos
     1- Buscar en la tabla productos el nombre de todos los productos 
     cuyo precio sea mayor a $2000 y tenga entre 5 y 30 unidades en stock
 
+    RESPUESTA: 
+    select nombre_producto from productos where precio >= 2000 and stock between (5,30);
+
     2- En la tabla cliente realizar las siguientes modificaciones:
     
     a) Actualizar todos los registros del campo nombre y del campo 
@@ -157,3 +160,4 @@ Crear tablas, insertar registros, seleccionar registros y actualizarlos
     b) Agregar en la columna comentario la leyenda 'cuit vencido' para
     todos los clientes cuyo cuit tenga menos de 8 caracteres
     PISTA: funcion length()
+
