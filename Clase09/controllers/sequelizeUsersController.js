@@ -1,6 +1,6 @@
 const User = require('../Model/userSequelizeModel')
 
-const createNewUser = async() => {
+const createNewUser = async () => {
     const newUser = await User.create({
         firstName: 'Fernando',
         lastName: 'Saavedra',
@@ -10,4 +10,9 @@ const createNewUser = async() => {
     console.log(`${newUser.firstName} tiene un id autogenerado de valor ${newUser.id}`)
 }
 
-module.exports = createNewUser
+const getAllUsers = async (req, res) => {
+    const allUsers = await User.findAll()
+    res.status(200).send(allUsers)
+}
+
+module.exports = { createNewUser, getAllUsers }
