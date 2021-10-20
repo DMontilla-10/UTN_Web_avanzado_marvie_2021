@@ -10,6 +10,7 @@ const titulo = <h1>Yo soy el título</h1>;
 // Es la combinacion de varios elementos
 
 const App = () => {
+
   const nombre = 'Daniel'
   const apellido = 'Montilla'
   const email = 'daniel@gmil.com'
