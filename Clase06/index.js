@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require('cors');
 require("dotenv").config();
 const userRoutes = require("./routes/usersRoutes");
 require('./config/database')
@@ -8,6 +9,7 @@ const port = process.env.PORT;
 
 //Middlewares
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.use("/api/users", userRoutes);

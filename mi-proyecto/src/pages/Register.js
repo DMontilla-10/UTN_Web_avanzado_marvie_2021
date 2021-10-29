@@ -1,11 +1,11 @@
 import React from "react";
-import LoginForm from "../components/LoginForm";
+import RegisterForm from "../components/RegisterForm";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 
-const Login = () => {
+const Register = () => {
   return (
-    <div style={{ marginTop: "30vh" }}>
+    <div style={{ marginTop: "25vh" }}>
       <Grid
         container
         direction="column"
@@ -13,12 +13,12 @@ const Login = () => {
         alignItems="center"
       >
         <Typography variant="overline" display="block" gutterBottom>
-          login
+          registro
         </Typography>
-        <LoginForm />
+        <RegisterForm />
       </Grid>
     </div>
   );
 };
 
-export default Login;
+export default Register;

@@ -1,12 +1,11 @@
 const { User } = require("../Model/userModel");
-const bcryptjs = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+const bcryptjs = require("bcryptjs");
+const { generateAccessToken } = require("../validate/validations");
 require("dotenv").config();
 
 const getAllUsers = (req, res) => {
   User.find()
     .then((data) => {
-      console.log("Data: ", data);
       res.json(data);
     })
     .catch((error) => {
@@ -34,8 +33,11 @@ const getUserById = async (req, res) => {
 // };
 
 const createNewUser = async (req, res) => {
+  const user = await User.find().where({ email: req.body.email });
+  if (user[0]) return res.status(400).json({error: 'Email already exist'})
+
   // Antes de guardar el password lo encriptamos
-  const password = await bcryptjs.hash(req.body.password, 10) 
+  const password = await bcryptjs.hash(req.body.password, 10);
 
   // Guardar nueva data en Mongo
   const data = {
@@ -50,10 +52,10 @@ const createNewUser = async (req, res) => {
   newUser.save((error) => {
     if (error) {
       console.log("Oooops, ocurrió un error");
-      res.send(error)
+      res.send(error);
     } else {
       console.log("Nuevo usuario guardado exitosamente !!!");
-      res.send(newUser)
+      return res.status(200).send(newUser);
     }
   });
 };
@@ -74,64 +76,45 @@ const createNewUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body)
-    res.send({ success: 'Usuario actualizado correctamente!!'})
+    await User.findByIdAndUpdate(req.params.id, req.body);
+    res.send({ success: "Usuario actualizado correctamente!!" });
   } catch (error) {
     res.status(404).send({ error: "Usuario no encontrado!!" });
   }
 };
 
 const deleteUser = async (req, res) => {
-  try {const user = await User.findByIdAndRemove(req.params.id)
-  res.send({ data: user })} catch(err) {
-    res.status(404).send({ error: 'Usuario no encontrado!! '})
+  try {
+    const user = await User.findByIdAndRemove(req.params.id);
+    res.send({ data: user });
+  } catch (err) {
+    res.status(404).send({ error: "Usuario no encontrado!! " });
   }
-}
+};
 
 const loginUser = async (req, res) => {
-  const accessToken = await generateAccessToken()
-  res.send({token: accessToken})
+  const user = await User.find().where({ email: req.body.email });
+  if (user[0]) {
+    const hashPassword = user[0].password;
 
-  // const user = await User.find().where({email: req.body.email})
-  // const hashPassword = user[0].password;
+    const password = req.body.password;
+    const compare = await bcryptjs.compare(password, hashPassword);
 
-  // const password = req.body.password
-  // const compare = await bcryptjs.compare(password, hashPassword)
-
-  // if(compare) {
-  //   res.json({status: 'OK'})
-  // } else {
-  //   res.json({ status: 'El email o contraseña son incorrectos'})
-  // }
-}
-
-const generateAccessToken = async () => {
-  const user = {
-    email: 'daniel@gmail.com',
-    password: '123456'
-  }
-
-  const token = await jwt.sign(user, process.env.PRIVATE_KEY, {expiresIn: '1h'})
-  return token
-}
-
-const verifyToken = (req, res, next) => {
-  const token = req.headers['authorization']
-
-  if(token){
-    jwt.verify(token, process.env.PRIVATE_KEY, (err, decoded) => {
-      if(err) {
-        return res.json({ message: 'Invalid token'})
-      } else {
-        req.decoded = decoded;
-        next()
-      }
-    })
+    if (compare) {
+      const userData = {
+        firstName: user[0].firstName,
+        lastName: user[0].lastName,
+        email: user[0].email,
+      };
+      const accessToken = await generateAccessToken(userData);
+      res.json({ status: "OK", token: accessToken });
+    } else {
+      res.json({ status: "El email o contraseña son incorrectos" });  
+    }
   } else {
-    res. send({ message: 'Forget token'})
+    res.json({ status: "El email o contraseña son incorrectos" });
   }
-}
-
+};
 
 // Funciones de validación
 const findUser = (id) => {
@@ -154,5 +137,4 @@ module.exports = {
   updateUser,
   deleteUser,
   loginUser,
-  verifyToken
 };

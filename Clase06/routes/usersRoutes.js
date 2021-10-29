@@ -5,13 +5,13 @@ const {
   createNewUser,
   updateUser,
   deleteUser,
-  loginUser,
-  verifyToken
+  loginUser
 } = require("../controllers/usersController");
+const { verifyToken } = require("../validate/validations");
 
 const userRoutes = express.Router();
 
-userRoutes.get("/allUser", verifyToken, getAllUsers);
+userRoutes.get("/allUsers", verifyToken, getAllUsers);
 
 //Capturar un parámetro
 userRoutes.get("/:id", getUserById);
