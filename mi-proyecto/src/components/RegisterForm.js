@@ -14,9 +14,15 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Snackbar from '@mui/material/Snackbar';
+import axios from 'axios'
 
 const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('')
+  const [open, setOpen] = useState(false)
+
+  console.log('este es el error: ',typeof(error.message))
 
   const handleClickShowPassword = () => {
     setShowPassword((prevValue) => !prevValue);
@@ -24,6 +30,10 @@ const RegisterForm = () => {
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
+  };
+
+  const handleClose = () => {
+    setOpen(prevState => !prevState);
   };
 
   const formik = useFormik({
@@ -48,7 +58,15 @@ const RegisterForm = () => {
         .required("La contraseña es requerida"),
     }),
     onSubmit: async (values, {resetForm}) => {
-      console.log(values)
+      try {
+        const response = await axios.post('http://localhost:3001/api/users',values)  
+        console.log(response)
+        resetForm()
+      } catch (error) {
+        console.log(error)
+        setError(error.message)
+        setOpen(prevState => !prevState)
+      }
     },
   });
 
@@ -135,6 +153,13 @@ const RegisterForm = () => {
           </Button>
         </Stack>
       </form>
+      <Snackbar
+        anchorOrigin={{ horizontal: 'top', vertical: 'right'  }}
+        open={open}
+        onClose={handleClose}
+        message={error}
+        autoHideDuration={3000}
+      />
     </>
   );
 };
