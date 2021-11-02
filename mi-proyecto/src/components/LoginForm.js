@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
 
-const LoginForm = () => {
+const LoginForm = ({isLogged, setIsLogged}) => {
+  const history = useHistory();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -15,8 +19,13 @@ const LoginForm = () => {
         email: Yup.string('Ingrese su email').email('Ingrese un email válido').required('El email es requerido'),
         password: Yup.string('Ingresa tu contraseña').min(6, 'La contraseña debe tener al menos 6 caracteres').required('La contraseña es requerida')
     }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2))
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post('http://localhost:3001/api/users/login',values)  
+        localStorage.setItem('token', response.data.token)
+      } catch (error) {
+        console.log(error)
+      }
     },
   });
 

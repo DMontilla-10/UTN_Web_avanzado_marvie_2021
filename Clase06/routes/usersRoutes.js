@@ -20,7 +20,7 @@ userRoutes.post("/", createNewUser);
 
 userRoutes.put("/:id", updateUser);
 
-userRoutes.post('/loggin', loginUser);
+userRoutes.post('/login', loginUser);
 
 // Manejo de peticiones DELETE
 // Eliminación física: se borra el registro

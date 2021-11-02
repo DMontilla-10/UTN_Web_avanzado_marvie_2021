@@ -1,14 +1,16 @@
 import React from "react";
+import { AuthRoutes } from "./components/AuthRoutes";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
 
 function App() {
+  const isLogged = true;
+
   return (
     <>
-      {/* <Login /> */}
-      {/* <Register /> */}
-      <Home />
+      {!isLogged 
+        ? <AuthRoutes /> 
+        : <Home />
+      }
     </>
   );
 }

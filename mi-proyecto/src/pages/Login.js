@@ -1,9 +1,16 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
+  let history = useHistory();
+
+  function handleClick() {
+    history.push("/register");
+  }
+
   return (
     <div style={{ marginTop: "30vh" }}>
       <Grid
@@ -16,6 +23,12 @@ const Login = () => {
           login
         </Typography>
         <LoginForm />
+        <Typography variant="overline">
+          No tengo cuenta
+          <Button variant="text" onClick={handleClick}>
+            Registrarme
+          </Button>
+        </Typography>
       </Grid>
     </div>
   );

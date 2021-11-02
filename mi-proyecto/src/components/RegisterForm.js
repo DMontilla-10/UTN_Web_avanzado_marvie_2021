@@ -16,13 +16,14 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Snackbar from '@mui/material/Snackbar';
 import axios from 'axios'
+import { useHistory } from "react-router-dom";
 
 const RegisterForm = () => {
+  const history = useHistory()
+
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('')
   const [open, setOpen] = useState(false)
-
-  console.log('este es el error: ',typeof(error.message))
 
   const handleClickShowPassword = () => {
     setShowPassword((prevValue) => !prevValue);
@@ -61,9 +62,8 @@ const RegisterForm = () => {
       try {
         const response = await axios.post('http://localhost:3001/api/users',values)  
         console.log(response)
-        resetForm()
+        history.push('/')
       } catch (error) {
-        console.log(error)
         setError(error.message)
         setOpen(prevState => !prevState)
       }
