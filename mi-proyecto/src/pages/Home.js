@@ -18,6 +18,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { UseMemo } from "./UseMemo";
 import { UseRef } from "./UseRef";
+import { UseReducer } from "./UseReducer";
 
 const drawerWidth = 240;
 
@@ -34,19 +35,21 @@ const Home = (props) => {
       <Toolbar />
       <Divider />
       <List>
-        {["useState", "useEffect", "useMemo", "useRef"].map((text) => (
-          <Link
-            to={`/${text}`}
-            style={{ textDecoration: "none", color: "#000" }}
-          >
-            <ListItem button key={text}>
-              <ListItemIcon>
-                <CodeIcon />
-              </ListItemIcon>
-              {text}
-            </ListItem>
-          </Link>
-        ))}
+        {["useState", "useEffect", "useMemo", "useRef", "useReducer"].map(
+          (text) => (
+            <Link
+              to={`/${text}`}
+              style={{ textDecoration: "none", color: "#000" }}
+            >
+              <ListItem button key={text}>
+                <ListItemIcon>
+                  <CodeIcon />
+                </ListItemIcon>
+                {text}
+              </ListItem>
+            </Link>
+          )
+        )}
       </List>
       <Divider />
       <List>
@@ -91,10 +94,7 @@ const Home = (props) => {
             >
               <MenuIcon />
             </IconButton>
-            <Link
-              to={'/'}
-              style={{ textDecoration: "none", color: "#FFF" }}
-            >
+            <Link to={"/"} style={{ textDecoration: "none", color: "#FFF" }}>
               <Typography variant="h6" noWrap component="div">
                 Curso Web Avanzado - UTN
               </Typography>
@@ -163,6 +163,9 @@ const Home = (props) => {
             </Route>
             <Route exact path="/useRef">
               <UseRef />
+            </Route>
+            <Route exact path="/useReducer">
+              <UseReducer />
             </Route>
             <Route exact path="/Datos Personales">
               Datos personales...
