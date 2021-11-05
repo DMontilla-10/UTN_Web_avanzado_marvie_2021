@@ -36,10 +36,11 @@ const Home = (props) => {
       <Divider />
       <List>
         {["useState", "useEffect", "useMemo", "useRef", "useReducer"].map(
-          (text) => (
+          (text, index) => (
             <Link
               to={`/${text}`}
               style={{ textDecoration: "none", color: "#000" }}
+              key={index}
             >
               <ListItem button key={text}>
                 <ListItemIcon>
@@ -57,6 +58,7 @@ const Home = (props) => {
           <Link
             to={`/${text}`}
             style={{ textDecoration: "none", color: "#000" }}
+            key={index}
           >
             <ListItem button key={text}>
               <ListItemIcon>

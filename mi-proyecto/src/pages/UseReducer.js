@@ -46,29 +46,44 @@
 //   );
 // };
 
-import React, { useReducer } from 'react'
-import { TodoList } from '../components/TodoList'
+import React, { useReducer, useRef } from "react";
+import { TodoList } from "../components/TodoList";
+import { v4 as uuidv4 } from "uuid";
+
+console.log(uuidv4())
 
 const reducer = (initialState, action) => {
-  switch(action.type){
-    case 'agregar-tarea': 
-     return [...initialState];
+  switch (action.type) {
+    case "agregar-tarea":
+      return [
+        ...initialState,
+        { id: uuidv4(), name: action.payload.name, complete: false },
+      ];
     default:
       return initialState;
   }
-}
+};
 
 export const UseReducer = () => {
-  const [todos, dispatch] = useReducer(reducer, ['Tarea1', 'Tarea2', 'Tarea3'])
+  const [todos, dispatch] = useReducer(reducer, []);
+  const inputNameRef = useRef();
+
+  const handlerAddTodo = () => {
+    const name = inputNameRef.current.value;
+    if (name === "") return;
+    dispatch({ type: "agregar-tarea", payload: { name: name } });
+    inputNameRef.current.value = null;
+  };
 
   return (
     <>
-      <div style={{fontSize: '20px'}}>X tareas por hacer</div>
-      <input type='text' style={{fontSize: '20px'}}/>
-      <button style={{fontSize: '20px'}}>Agregar tareas</button>
-      <button style={{fontSize: '20px'}}>Eliminar tareas realizadas</button>
-      <TodoList todos={todos}/>
+      <div style={{ fontSize: "20px" }}>X tareas por hacer</div>
+      <input ref={inputNameRef} type="text" style={{ fontSize: "20px" }} />
+      <button style={{ fontSize: "20px" }} onClick={handlerAddTodo}>
+        Agregar tarea
+      </button>
+      <button style={{ fontSize: "20px" }}>Eliminar tareas realizadas</button>
+      <TodoList todos={todos} />
     </>
-  )
-}
-
+  );
+};

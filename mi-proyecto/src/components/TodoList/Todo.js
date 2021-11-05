@@ -4,7 +4,7 @@ export const Todo = ({todo}) => {
     return (
         <div>
             <input type='checkbox' />
-            {todo}
+            {todo.name}
         </div>
     )
 }
