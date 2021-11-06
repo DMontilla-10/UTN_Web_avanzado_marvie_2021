@@ -50,15 +50,28 @@ import React, { useReducer, useRef } from "react";
 import { TodoList } from "../components/TodoList";
 import { v4 as uuidv4 } from "uuid";
 
-console.log(uuidv4())
+const ACTIONS = {
+  AGREGAR_TAREA: "agregar-tarea",
+  CAMBIAR_ESTADO: "cambiar-estado-de-tarea",
+  BORRAR_TAREAS: "borrar-tareas",
+};
 
 const reducer = (initialState, action) => {
   switch (action.type) {
-    case "agregar-tarea":
+    case ACTIONS.AGREGAR_TAREA:
       return [
         ...initialState,
         { id: uuidv4(), name: action.payload.name, complete: false },
       ];
+    case ACTIONS.CAMBIAR_ESTADO:
+      return initialState.map((todo) => {
+        if (todo.id === action.payload.id) {
+          return { ...todo, complete: !todo.complete };
+        }
+        return todo;
+      });
+    case ACTIONS.BORRAR_TAREAS:
+      return initialState.filter(todo => !todo.complete)
     default:
       return initialState;
   }
@@ -71,19 +84,28 @@ export const UseReducer = () => {
   const handlerAddTodo = () => {
     const name = inputNameRef.current.value;
     if (name === "") return;
-    dispatch({ type: "agregar-tarea", payload: { name: name } });
+    dispatch({ type: ACTIONS.AGREGAR_TAREA, payload: { name: name } });
     inputNameRef.current.value = null;
   };
 
+  const cambiarEstadoTarea = (id) => {
+    dispatch({ type: ACTIONS.CAMBIAR_ESTADO, payload: { id: id } });
+  };
+
+  const handlerClearTodos = () => {
+    dispatch({type: ACTIONS.BORRAR_TAREAS})
+  }
+
   return (
     <>
-      <div style={{ fontSize: "20px" }}>X tareas por hacer</div>
+      <div style={{ fontSize: "20px" }}>
+        {todos.filter((todo) => !todo.complete).length} tareas por hacer</div>
       <input ref={inputNameRef} type="text" style={{ fontSize: "20px" }} />
       <button style={{ fontSize: "20px" }} onClick={handlerAddTodo}>
         Agregar tarea
       </button>
-      <button style={{ fontSize: "20px" }}>Eliminar tareas realizadas</button>
-      <TodoList todos={todos} />
+      <button style={{ fontSize: "20px" }} onClick={handlerClearTodos}>Eliminar tareas realizadas</button>
+      <TodoList todos={todos} cambiarEstadoTarea={cambiarEstadoTarea} />
     </>
   );
 };
