@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import Stack from "@mui/material/Stack";
@@ -6,9 +6,12 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { LoginContext } from "../Helpers/Context";
 
-const LoginForm = ({isLogged, setIsLogged}) => {
+const LoginForm = () => {
   const history = useHistory();
+
+  const { setIsLogged } = useContext(LoginContext)
 
   const formik = useFormik({
     initialValues: {
@@ -22,7 +25,7 @@ const LoginForm = ({isLogged, setIsLogged}) => {
     onSubmit: async (values) => {
       try {
         const response = await axios.post('http://localhost:3001/api/users/login',values)  
-        localStorage.setItem('token', response.data.token)
+        setIsLogged(prevState => !prevState)
       } catch (error) {
         console.log(error)
       }

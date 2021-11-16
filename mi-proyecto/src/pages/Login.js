@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import { Typography, Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
 
-const Login = () => {
+const Login = ({setIsLogged}) => {
   let history = useHistory();
 
   function handleClick() {
