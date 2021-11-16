@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -19,10 +19,13 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { UseMemo } from "./UseMemo";
 import { UseRef } from "./UseRef";
 import { UseReducer } from "./UseReducer";
+import { LoginContext } from "../Helpers/Context";
 
 const drawerWidth = 240;
 
 const Home = (props) => {
+  const {setIsLogged} = useContext(LoginContext)
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
