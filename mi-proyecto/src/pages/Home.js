@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Link, Redirect } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,21 +16,39 @@ import Typography from "@mui/material/Typography";
 import CodeIcon from "@mui/icons-material/Code";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import StarIcon from "@mui/icons-material/Star";
 import { UseMemo } from "./UseMemo";
 import { UseRef } from "./UseRef";
 import { UseReducer } from "./UseReducer";
 import { LoginContext } from "../Helpers/Context";
+import { UsersList } from "./UsersList";
+import { PrivatePage } from "./PrivatePage";
 
 const drawerWidth = 240;
 
 const Home = (props) => {
-  const {setIsLogged} = useContext(LoginContext)
+  const { setIsLogged } = useContext(LoginContext);
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleLogout = () => {
+    setIsLogged((prevState) => !prevState);
+    localStorage.clear();
+  };
+
+  const tipoDeSuscripcion = "pro";
+
+  const PrivateRoute = ({ component: Component, ...rest }) => {
+    return (
+      <Route {...rest}>
+        {tipoDeSuscripcion === "pro" ? <Component /> : <Redirect to="/" />}
+      </Route>
+    );
   };
 
   const drawer = (
@@ -57,13 +75,42 @@ const Home = (props) => {
       </List>
       <Divider />
       <List>
+        <Link
+          to={"/listaDeUsuarios"}
+          style={{ textDecoration: "none", color: "#000" }}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            Lista de usuarios
+          </ListItem>
+        </Link>
+        <Link
+          to={"/herramientasPRO"}
+          style={{ textDecoration: "none", color: "#000" }}
+        >
+          <ListItem button>
+            <ListItemIcon>
+              <StarIcon />
+            </ListItemIcon>
+            Herramientas PRO
+          </ListItem>
+        </Link>
+      </List>
+      <Divider />
+      <List>
         {["Datos Personales", "Logout"].map((text, index) => (
           <Link
-            to={`/${text}`}
+            to={text === "Logout" ? "/" : `/${text}`}
             style={{ textDecoration: "none", color: "#000" }}
             key={index}
           >
-            <ListItem button key={text}>
+            <ListItem
+              button
+              key={text}
+              onClick={() => (text === "Logout" ? handleLogout() : null)}
+            >
               <ListItemIcon>
                 {index % 2 === 0 ? <AccountCircleIcon /> : <LogoutIcon />}
               </ListItemIcon>
@@ -175,6 +222,14 @@ const Home = (props) => {
             <Route exact path="/Datos Personales">
               Datos personales...
             </Route>
+            <Route exact path="/listaDeUsuarios">
+              <UsersList />
+            </Route>
+            <PrivateRoute
+              exact
+              path="/herramientasPRO"
+              component={PrivatePage}
+            />
           </Switch>
         </Box>
       </BrowserRouter>

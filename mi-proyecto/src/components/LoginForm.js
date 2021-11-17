@@ -11,7 +11,7 @@ import { LoginContext } from "../Helpers/Context";
 const LoginForm = () => {
   const history = useHistory();
 
-  const { setIsLogged } = useContext(LoginContext)
+  const { isLogged, setIsLogged } = useContext(LoginContext)
 
   const formik = useFormik({
     initialValues: {
@@ -26,6 +26,7 @@ const LoginForm = () => {
       try {
         const response = await axios.post('http://localhost:3001/api/users/login',values)  
         setIsLogged(prevState => !prevState)
+        localStorage.setItem('isAuthenticated', response.data.token)
       } catch (error) {
         console.log(error)
       }
